@@ -1,0 +1,20 @@
+.App {
+    text-align: center;
+  }
+  .modeButtpn-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 5px;
+    gap: 5px;
+  }
+  .grid-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh; /* Adjust height as needed */
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+  }
