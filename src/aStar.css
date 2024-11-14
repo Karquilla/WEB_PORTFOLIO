@@ -31,4 +31,17 @@
   justify-content: center;
   align-items: center;
   border-radius: 0px;
+  transition: background-color 0.2s; /* Smooth color transition */
+}
+
+.grid-box.checked {
+  background-color: #87CEEB; /* Light blue for open set */
+}
+
+.grid-box.closed {
+  background-color: #FFA07A; /* Light coral for closed set */
+}
+
+.grid-box.path {
+  background-color: #33aa33; /* Dark green for path */
 }
