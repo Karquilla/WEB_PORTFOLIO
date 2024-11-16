@@ -28,6 +28,7 @@ class GridBox {
 const aStar = ({ columns = 20, cellSize = 20 }) => {
   const [startNode, setStartNode]     = useState(null);
   const [endNode, setEndNode]         = useState(null);
+  //const [currentNode, setCurrentNode] = useState(null);
   //const [openSet, setOpenSet]         = useState([]);
   const [closedSet, setClosedSet]     = useState([]);
   //const [neighbors, setNeighbors]      = useState([]);
@@ -36,9 +37,7 @@ const aStar = ({ columns = 20, cellSize = 20 }) => {
   // State for grid boxes, assigning each box an (x, y) coordinate
   const [boxes, setBoxes] = useState(
     Array.from({ length: columns * columns }, (_, i) => {
-      const x = i % columns;
-      const y = Math.floor(i / columns);
-      return new GridBox(i, LIGHTGREY, `Box ${i + 1}`, x, y);
+      return new GridBox(i, LIGHTGREY, `Box ${i + 1}`, i % columns, Math.floor(i / columns));
     })
   );
 
@@ -71,93 +70,96 @@ const aStar = ({ columns = 20, cellSize = 20 }) => {
       return;
     }
   
-    // Initialize Manhattan heuristic, g, and f scores for each box
-    setBoxes((prevBoxes) =>
-      prevBoxes.map((box) => {
-        const h = Math.abs(box.x - endNode.x) + Math.abs(box.y - endNode.y); // Manhattan distance
-        return {
-          ...box,
-          h: box.type === 'wall' ? Infinity : h,
-          f: 0,
-          g: 0,
-          prevNode: null,
-        };
-      })
-    );
+    const mutableBoxes = [...boxes]; // Create a mutable copy of boxes for internal use
   
-    // Set initial values for startNode
-
-    // Initialize open and closed sets with just the start node
-    let openSet = [startNode];
-    let closedSet = [];
+    // Initialize scores and heuristic for all nodes
+    for (let box of mutableBoxes) {
+      box.g = Infinity; // Cost from start to this node
+      box.h = Math.abs(box.x - endNode.x) + Math.abs(box.y - endNode.y); // Manhattan heuristic
+      box.f = Infinity; // Total cost (g + h)
+      box.prevNode = null; // Reset previous node
+    }
   
-    // Main A* loop
+    const start = mutableBoxes[startNode.id];
+    start.g = 0; // Starting node has zero cost
+    start.f = start.h;
+  
+    const openSet = [start]; // Nodes to be evaluated
+    const closedSet = []; // Already evaluated nodes
+  
     while (openSet.length > 0) {
-      // Sort openSet by f score to always pick the node with the lowest f
-      let nextBest = 0;
-      for (let i = 0; i < openSet.length; i++) {
-        if (openSet[nextBest].f > openSet[i].f) { // Fixed typo `nextbest` to `nextBest`
-          nextBest = i;
+      // Find node with the lowest `f` score in the open set
+      let bestIndex = 0;
+      for (let i = 1; i < openSet.length; i++) {
+        if (openSet[i].f < openSet[bestIndex].f) {
+          bestIndex = i;
         }
       }
-      const currentNode = openSet[nextBest]; // Node with the lowest f score
+      const currentNode = openSet[bestIndex];
   
-      // Check if the current node is the end node
-      if (currentNode === endNode) {
+      // Visualize the current node
+      setBoxes((prevBoxes) =>
+        prevBoxes.map((box) =>
+          box.id === currentNode.id ? { ...box, color: '#000000' } : box
+        )
+      );
+  
+      // Check if we've reached the end node
+      if (currentNode === mutableBoxes[endNode.id]) {
+        // Reconstruct the path
         let path = [];
         let temp = currentNode;
-  
-        // Trace back to startNode to reconstruct the path
         while (temp) {
           path.unshift(temp);
           temp = temp.prevNode;
         }
   
-        // Highlight the path nodes
+        // Visualize the path
         for (let node of path) {
           setBoxes((prevBoxes) =>
             prevBoxes.map((box) =>
               box.id === node.id ? { ...box, color: DARKGREEN } : box
             )
           );
-          await sleep(50); // Visualization delay for the path
+          await sleep(50); // Visualization delay
         }
-        return; // Exit once the path is found and visualized
+        return; // Exit when the path is found
       }
   
-      // Remove currentNode from openSet and add to closedSet
-      openSet.shift(); // Remove the node with the lowest f score (already at index 0)
+      // Move currentNode from openSet to closedSet
+      openSet.splice(openSet.indexOf(currentNode), 1);
       closedSet.push(currentNode);
   
-      // Update the color for closed set nodes
+      // Visualize the closed set
       setBoxes((prevBoxes) =>
         prevBoxes.map((box) =>
           box.id === currentNode.id ? { ...box, color: '#FFA07A' } : box
         )
       );
   
-      // Get neighbors of currentNode
+      // Get neighbors of the current node
       const neighbors = getNeighbors(currentNode.id);
   
       for (let neighborId of neighbors) {
-        let neighbor = boxes.find((box) => box.id === neighborId);
-        if (closedSet.some((closedNode) => closedNode.id === neighbor.id) || neighbor.type === 'wall') {
-          continue; // Skip walls and nodes already in closedSet
+        const neighbor = mutableBoxes[neighborId];
+  
+        if (closedSet.includes(neighbor) || neighbor.type === 'wall') {
+          continue; // Skip walls or already evaluated nodes
         }
   
-        let tempG = currentNode.g + 1; // Incremental cost from start to this neighbor
+        // Tentative g score
+        const tentativeG = currentNode.g + 1; // Cost to move to this neighbor
   
-        // Only consider this new path if it’s better or if the neighbor hasn’t been explored
-        const neighborInOpenSet = openSet.some((node) => node.id === neighbor.id);
-        if (!neighborInOpenSet || tempG < neighbor.g) {
-          neighbor.g = tempG;
-          neighbor.f = neighbor.g + neighbor.h; // Update f score with g + h
+        if (tentativeG < neighbor.g) {
+          // Found a better path
+          neighbor.g = tentativeG;
+          neighbor.f = neighbor.g + neighbor.h;
           neighbor.prevNode = currentNode;
   
-          if (!neighborInOpenSet) {
+          if (!openSet.includes(neighbor)) {
             openSet.push(neighbor);
   
-            // Visualization: Mark neighbor as part of the open set
+            // Visualize open set
             setBoxes((prevBoxes) =>
               prevBoxes.map((box) =>
                 box.id === neighbor.id ? { ...box, color: '#ADD8E6' } : box
@@ -166,9 +168,11 @@ const aStar = ({ columns = 20, cellSize = 20 }) => {
           }
         }
       }
-      console.log(openSet)
-      await sleep(50); // Delay for visualizing each step
+  
+      await sleep(50); // Delay for visualization
     }
+  
+    console.error("No path found");
   };
   
   
@@ -177,7 +181,11 @@ const aStar = ({ columns = 20, cellSize = 20 }) => {
   // Handler for clicking a box
   const handleClick = (id) => {
     getNeighbors(id);
-    console.log(`Box ${id} clicked in ${mode}!`);
+    const box = boxes[id];
+    const x = box ? box.x : null;
+    const y = box ? box.y : null;
+
+    console.log(`Box ${id} clicked in ${mode}!, posx ${x} posy ${y}`);
     setBoxes((prevBoxes) => {
       // Clone the previous array of boxes
       const updatedBoxes = [...prevBoxes];
@@ -205,38 +213,26 @@ const aStar = ({ columns = 20, cellSize = 20 }) => {
   };
 
   const getNeighbors = (id) => {
-    // Retrieve the current node's position based on the given id
-    let currNodeIndex = boxes.findIndex((box) => box.id === id);
-    if (currNodeIndex === -1) return []; // If not found, return an empty array
+    const currentNode = boxes[id];
+    const directions = [
+      { dx: 0, dy: -1 }, // Up
+      { dx: 0, dy: 1 },  // Down
+      { dx: -1, dy: 0 }, // Left
+      { dx: 1, dy: 0 },  // Right
+      { dx: -1, dy: -1},
+      { dx: 1, dy: 1},
+      { dx: 1, dy: -1},
+      { dx: -1, dy: 1},
+    ];
   
-    let currNode = boxes[currNodeIndex];
-    let xPos = currNode.x;
-    let yPos = currNode.y;
-    
-    const newNeighbors = [];
-    
-    // Check neighboring positions using offsets
-    for (let offsetX = -1; offsetX <= 1; offsetX++) {
-      for (let offsetY = -1; offsetY <= 1; offsetY++) {
-        if (offsetX === 0 && offsetY === 0) continue; // Skip the current node itself
-  
-        // Calculate the neighboring position
-        let neighborX = xPos + offsetX;
-        let neighborY = yPos + offsetY;
-  
-        // Find the neighbor by position
-        let neighbor = boxes.find((box) => box.x === neighborX && box.y === neighborY);
-        if (neighbor) {
-          if (closedSet.includes(neighbor) || neighbor.state === "wall") {
-            continue;
-          }
-          newNeighbors.push(neighbor.id);
-        }
-      }
-    }
-    
-    //console.log(newNeighbors);
-    return newNeighbors;
+    return directions
+      .map(({ dx, dy }) => {
+        const neighbor = boxes.find(
+          (box) => box.x === currentNode.x + dx && box.y === currentNode.y + dy
+        );
+        return neighbor && neighbor.type !== 'wall' ? neighbor.id : null;
+      })
+      .filter((neighborId) => neighborId !== null);
   };
   
   function sleep(ms) {
@@ -362,11 +358,23 @@ const aStar = ({ columns = 20, cellSize = 20 }) => {
             onClick={() => handleClick(box.id)}
             onMouseDown={() => handleMouseDown(box.id)}
             onMouseEnter={() => handleMouseEnter(box.id)}
+            
           >
             {/* Optional content */}
+      {/* Display f score */}
+      <span
+        style={{
+          fontSize: '12px', // Adjust font size to fit the box
+          color: '#ffffff', // Text color for visibility
+          pointerEvents: 'none', // Prevent interfering with button clicks
+        }}
+      >
+        {box.h}
+      </span>
           </button>
         ))}
       </div>
+      
     </div>
   );
 };
