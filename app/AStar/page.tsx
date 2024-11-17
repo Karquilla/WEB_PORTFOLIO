@@ -1,5 +1,5 @@
 import Navbar from "../../src/navbar";
-import AStar from "../../src/aStar";
+import Astar from "../../src/aStar";
 import "../App.css"
 
 export default function page() {
@@ -8,7 +8,7 @@ export default function page() {
       
     <div className="layout">
       <div className='-container'> <Navbar /> </div>
-        <div className="grid-container"> <AStar /> </div>
+        <div className="grid-container"> <Astar /> </div>
     </div>
     </div>
   );

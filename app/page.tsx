@@ -2,8 +2,8 @@
 
 
 import React from "react";
-import Link from 'next/link'
-import AStar from '../src/aStar';
+//import Link from 'next/link'
+//import AStar from '../src/aStar';
 import Home from '../src/home';
 import Navbar from "../src/navbar";
 import './App.css';

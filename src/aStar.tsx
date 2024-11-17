@@ -1,8 +1,8 @@
 // Grid.js
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import '../src/aStar.css';
-import { start } from 'repl';
+//import { start } from 'repl';
 
 const LIGHTGREY = '#D3D3D3';
 const DARKRED = '#aa3333';
@@ -10,24 +10,38 @@ const BLACK = '#010101';
 const DARKGREEN = '#33aa33';
 
 class GridBox {
-  constructor(id, color, label, x, y) {
+
+  id: number; // Declare the property and its type
+  color: string;
+  label: string;
+  x: number; // Use `number` instead of `Number` for TypeScript typing
+  y: number;
+  g: number; // Use `number` instead of `Number` for TypeScript typing
+  h: number;
+  f: number;
+  type: string;
+  prevNode: GridBox | null; // Declare prevNode as either a GridBox or null
+
+
+  constructor(id :number, color :string, label :string, x:number, y:number) {
     this.id = id;
     this.color = color;
     this.label = label;
     this.x = x; // X position in grid
+    this.y = y;
     this.f = 0;
     this.g = 0;
     this.h = 0;
     this.type = 'open';
-    this.prevNode;
+    this.prevNode = null;
   }
 }
 
 
-const aStar = ({ columns = 40, cellSize = 20 }) => {
-  const [startNode, setStartNode]     = useState(null);
-  const [endNode, setEndNode]         = useState(null);
-
+const Astar = ({ columns = 40, cellSize = 20 }) => {
+  const [startNode, setStartNode]     = useState<GridBox | null>(null);
+  const [endNode, setEndNode]         = useState<GridBox | null>(null);
+  const [loopCount] = useState(0);
   // State for grid boxes, assigning each box an (x, y) coordinate
   const [boxes, setBoxes] = useState(
     Array.from({ length: columns * columns }, (_, i) => {
@@ -40,7 +54,6 @@ const aStar = ({ columns = 40, cellSize = 20 }) => {
 
   // State for a running loop
   const [running, setRunning] = useState(false);
-  const [loopCount, setLoopCount] = useState(0);
   const [mouseState, setmouseState] = useState('up');
 
   //const push = (setArray, newElement) => {
@@ -67,7 +80,7 @@ const aStar = ({ columns = 40, cellSize = 20 }) => {
     const mutableBoxes = [...boxes]; // Create a mutable copy of boxes for internal use
   
     // Initialize scores and heuristic for all nodes
-    for (let box of mutableBoxes) {
+    for (const box of mutableBoxes) {
       box.g = Infinity; // Cost from start to this node
       box.h = Math.abs(box.x - endNode.x) + Math.abs(box.y - endNode.y); // Manhattan heuristic
       box.f = Infinity; // Total cost (g + h)
@@ -101,15 +114,15 @@ const aStar = ({ columns = 40, cellSize = 20 }) => {
       // Check if we've reached the end node
       if (currentNode === mutableBoxes[endNode.id]) {
         // Reconstruct the path
-        let path = [];
-        let temp = currentNode;
-        while (temp) {
+        const path:GridBox[] = [];
+        let temp: GridBox | null = currentNode;
+        while (temp !== null) {
           path.unshift(temp);
           temp = temp.prevNode;
         }
   
         // Visualize the path
-        for (let node of path) {
+        for (const node of path) {
           setBoxes((prevBoxes) =>
             prevBoxes.map((box) =>
               box.id === node.id ? { ...box, color: DARKGREEN } : box
@@ -134,7 +147,7 @@ const aStar = ({ columns = 40, cellSize = 20 }) => {
       // Get neighbors of the current node
       const neighbors = getNeighbors(currentNode.id);
   
-      for (let neighborId of neighbors) {
+      for (const neighborId of neighbors) {
         const neighbor = mutableBoxes[neighborId];
   
         if (closedSet.includes(neighbor) || neighbor.type === 'wall') {
@@ -171,7 +184,7 @@ const aStar = ({ columns = 40, cellSize = 20 }) => {
   
 
   // Handler for clicking a box
-  const handleClick = (id) => {
+  const handleClick = (id:number) => {
     getNeighbors(id);
     const box = boxes[id];
     const x = box ? box.x : null;
@@ -192,19 +205,19 @@ const aStar = ({ columns = 40, cellSize = 20 }) => {
     });
   };
 
-  const handleMouseDown = (id) => {
+  const handleMouseDown = (id:number) => {
     setmouseState('down');
     updateBoxColor(id);
   };
 
-  const handleMouseEnter = (id) => {
+  const handleMouseEnter = (id:number) => {
     if (mouseState === 'down') {
       updateBoxColor(id);
     }
     
   };
 
-  const getNeighbors = (id) => {
+  const getNeighbors = (id:number) => {
     const currentNode = boxes[id];
     const directions = [
       { dx: 0, dy: -1 }, // Up
@@ -227,12 +240,12 @@ const aStar = ({ columns = 40, cellSize = 20 }) => {
       .filter((neighborId) => neighborId !== null);
   };
   
-  function sleep(ms) {
+  function sleep(ms :number) {
     console.log("timer started")
     return new Promise(resolve => setTimeout(resolve, ms));
   };
 
-  const updateBoxColor = (id) => {
+  const updateBoxColor = (id:number) => {
     setBoxes((prevBoxes) => {
       // Clone the previous array of boxes
       const updatedBoxes = [...prevBoxes];
@@ -247,7 +260,7 @@ const aStar = ({ columns = 40, cellSize = 20 }) => {
             updatedBoxes[boxIndex].type = 'start';
             setStartNode(updatedBoxes[boxIndex]); 
           } else {
-            let temp = startNode;
+            const temp = startNode;
             updatedBoxes[boxIndex].color = DARKRED;
             updatedBoxes[boxIndex].type = 'start';
             setStartNode(updatedBoxes[boxIndex]);
@@ -260,7 +273,7 @@ const aStar = ({ columns = 40, cellSize = 20 }) => {
             updatedBoxes[boxIndex].type = 'end';
             setEndNode(updatedBoxes[boxIndex]); 
           } else {
-            let temp = endNode;
+            const temp = endNode;
             updatedBoxes[boxIndex].color = DARKGREEN;
             updatedBoxes[boxIndex].type = 'end';
             setEndNode(updatedBoxes[boxIndex]);
@@ -351,13 +364,13 @@ const aStar = ({ columns = 40, cellSize = 20 }) => {
 };
 
 // Function to generate a random color for each box
-const getRandomColor = () => {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
+//const getRandomColor = () => {
+//  const letters = '0123456789ABCDEF';
+//  let color = '#';
+//  for (let i = 0; i < 6; i++) {
+//    color += letters[Math.floor(Math.random() * 16)];
+//  }
+//  return color;
+//};
 
-export default aStar;
+export default Astar;
