@@ -1,20 +1,50 @@
 .App {
     text-align: center;
   }
+
+  
+  .layout {
+  display: flex; /* Flex container for the whole page */
+  height: 100%; /* Full viewport height */
+  
+  }
+
   .modeButtpn-container {
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     padding: 5px;
     gap: 5px;
   }
   .grid-container {
+    width: 100%;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    height: 100vh; /* Adjust height as needed */
+    align-items: center;
+    flex-direction: column;
+    background-color: #555555;
+    padding: 10px;
   }
+
+  .-container {
+    flex: 1;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    padding: 5px;
+    gap: 5px;
+    
+}
+
   
   h1 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    display: flex;
+    justify-content: center;
     margin-bottom: 20px;
   }

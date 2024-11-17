@@ -1,7 +1,7 @@
 // Grid.js
 'use client'
 import React, { useState, useEffect } from 'react';
-import './aStar.css';
+import '../src/aStar.css';
 import { start } from 'repl';
 
 const LIGHTGREY = '#D3D3D3';
@@ -15,7 +15,6 @@ class GridBox {
     this.color = color;
     this.label = label;
     this.x = x; // X position in grid
-    this.y = y; // Y position in grid
     this.f = 0;
     this.g = 0;
     this.h = 0;
@@ -25,19 +24,14 @@ class GridBox {
 }
 
 
-const aStar = ({ columns = 20, cellSize = 20 }) => {
+const aStar = ({ columns = 40, cellSize = 20 }) => {
   const [startNode, setStartNode]     = useState(null);
   const [endNode, setEndNode]         = useState(null);
-  //const [currentNode, setCurrentNode] = useState(null);
-  //const [openSet, setOpenSet]         = useState([]);
-  const [closedSet, setClosedSet]     = useState([]);
-  //const [neighbors, setNeighbors]      = useState([]);
-  //const [pathNodes, setPathNeighbors] = useState([]);
 
   // State for grid boxes, assigning each box an (x, y) coordinate
   const [boxes, setBoxes] = useState(
     Array.from({ length: columns * columns }, (_, i) => {
-      return new GridBox(i, LIGHTGREY, `Box ${i + 1}`, i % columns, Math.floor(i / columns));
+      return new GridBox(i, LIGHTGREY, `Box ${i + 1}`, i % (columns), Math.floor(i / columns));
     })
   );
 
@@ -49,16 +43,16 @@ const aStar = ({ columns = 20, cellSize = 20 }) => {
   const [loopCount, setLoopCount] = useState(0);
   const [mouseState, setmouseState] = useState('up');
 
-  const push = (setArray, newElement) => {
-    setArray((prevArray) => {
-      const updatedArray = [...prevArray, newElement];
-      return updatedArray;
-    });
-  };
-  
-  const pop = (setArray) => {
-    setArray((prevArray) => prevArray.slice(0, -1));
-  };
+  //const push = (setArray, newElement) => {
+  //  setArray((prevArray) => {
+  //    const updatedArray = [...prevArray, newElement];
+  //    return updatedArray;
+  //  });
+  //};
+  //
+  //const pop = (setArray) => {
+  //  setArray((prevArray) => prevArray.slice(0, -1));
+  //};
 
   //const removeFromArray = (id, setArray, Node) => {
   //  setArray.findIndex((Node) => Node.id === id);
@@ -98,11 +92,11 @@ const aStar = ({ columns = 20, cellSize = 20 }) => {
       const currentNode = openSet[bestIndex];
   
       // Visualize the current node
-      setBoxes((prevBoxes) =>
-        prevBoxes.map((box) =>
-          box.id === currentNode.id ? { ...box, color: '#000000' } : box
-        )
-      );
+      //setBoxes((prevBoxes) =>
+      //  prevBoxes.map((box) =>
+      //    box.id === currentNode.id ? { ...box, color: '#000000' } : box
+      //  )
+      //);
   
       // Check if we've reached the end node
       if (currentNode === mutableBoxes[endNode.id]) {
@@ -148,7 +142,7 @@ const aStar = ({ columns = 20, cellSize = 20 }) => {
         }
   
         // Tentative g score
-        const tentativeG = currentNode.g + 1; // Cost to move to this neighbor
+        const tentativeG = currentNode.g + 1; 
   
         if (tentativeG < neighbor.g) {
           // Found a better path
@@ -168,10 +162,8 @@ const aStar = ({ columns = 20, cellSize = 20 }) => {
           }
         }
       }
-  
       await sleep(50); // Delay for visualization
     }
-  
     console.error("No path found");
   };
   
@@ -297,31 +289,18 @@ const aStar = ({ columns = 20, cellSize = 20 }) => {
     }
   };
 
-
-
-  // Effect for running loop
-  //useEffect(() => {
-  //  if (running) {
-  //    const interval = setInterval(() => {
-  //      setLoopCount((prevCount) => prevCount + 1);
-  //      console.log(`Loop running: ${loopCount}`);
-  //      aStarPath();
-  //      toggleRunning;
-  //    }, 1000); // Runs every 1 second
-  //
-  //    return () => clearInterval(interval); // Cleanup interval on unmount or when `running` changes
-  //  }
-  //}, [running, loopCount]);
-
   return (
-    <div onMouseUp={() => setmouseState('up')}>
+    <div 
+      onMouseUp={() => setmouseState('up')}
+      >
+
       {/* Control Buttons */}
       <div className="modeButtpn-container">
         <button className="control-buttons" onClick={() => setMode('Mode 1')}>Place Start</button>
         <button className="control-buttons" onClick={() => setMode('Mode 2')}>Place End</button>
         <button className="control-buttons" onClick={() => setMode('Mode 3')}>Place Wall</button>
         <button className="control-buttons" onClick={toggleRunning}>
-          {running ? 'Stop Loop' : 'Start Loop'}
+          {running ? 'Reset Loop' : 'Start search'}
         </button>
       </div>
   
@@ -341,23 +320,15 @@ const aStar = ({ columns = 20, cellSize = 20 }) => {
         {boxes.map((box) => (
           <button
             key={box.id}
-            className={`grid-box ${
-              box.color === DARKGREEN
-                ? 'path'
-                : box.color === '#87CEEB'
-                ? 'checked'
-                : box.color === '#FFA07A'
-                ? 'closed'
-                : ''
-            }`}
+            className={`grid-box`}
             style={{
               backgroundColor: box.color,
               width: `${cellSize}px`,
               height: `${cellSize}px`,
             }}
-            onClick={() => handleClick(box.id)}
-            onMouseDown={() => handleMouseDown(box.id)}
-            onMouseEnter={() => handleMouseEnter(box.id)}
+            onClick={() => (!running) ? handleClick(box.id) : null}
+            onMouseDown={() => (!running) ? handleMouseDown(box.id): null}
+            onMouseEnter={() => (!running) ? handleMouseEnter(box.id): null}
             
           >
             {/* Optional content */}

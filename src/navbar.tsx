@@ -1,15 +1,19 @@
 'use client'
 import React from "react";
-import { Link } from "react-router-dom";
+import  Link  from "next/link";
+import "./navbar.css";
 
 const Navbar = () => {
   return (
-    <nav>
+    <div className='control-container'>
+      <nav>
       <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/AStar">A*</Link></li>
+        <li className="control-button"><Link href="/Home">Home</Link></li>
+        <li className="control-button"><Link href="/AStar">A*</Link></li>
       </ul>
-    </nav>
+      </nav>
+    </div>
+    
   );
 };
 
