@@ -4,8 +4,9 @@ import "../App.css"
 
 export default function page() {
   return (
-    <div> <Navbar />
-    <Home />
+    <div className="layout"> 
+      <div className='-container'> <Navbar /> </div>
+      <div className='-container'><Home /></div>
     </div>
   );
 }

@@ -1,21 +1,19 @@
 .control-container {
     display: flex;
+    padding: 1px;
+    gap: 10px;
     flex-direction: row;
-    padding: 5px;
-    gap: 5px;
 }
 
 .control-button {
-    background: #D3D3D3;
-    display: flex;
-    color: #0a0a0a;
+    display: flex; /* Flex container for link content */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    background-color: #D3D3D3; /* Background color */
+    color: black; /* Text color */
     font-weight: bold;
-    border: none;
-    cursor: pointer;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border-radius: 0px;
-    padding: 20px;
-    gap: 10px;
+    border-radius: 0px; /* Rounded corners */
+
+    padding: 20px; /* Add clickable space */
+    gap: 200px;
   }
