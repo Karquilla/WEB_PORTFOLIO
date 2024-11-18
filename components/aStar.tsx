@@ -186,8 +186,8 @@ const Astar = ({ columns = 40, rows = 20, cellSize = 20 }) => {
   const handleClick = (id:number) => {
     getNeighbors(id);
     const box = boxes[id];
-    const x = box ? box.x : null;
-    const y = box ? box.y : null;
+    //const x = box ? box.x : null;
+    //const y = box ? box.y : null;
 
     //console.log(`Box ${id} clicked in ${mode}!, posx ${x} posy ${y}`);
     setBoxes((prevBoxes) => {
