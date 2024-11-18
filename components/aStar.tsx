@@ -185,7 +185,7 @@ const Astar = ({ columns = 40, rows = 20, cellSize = 20 }) => {
   // Handler for clicking a box
   const handleClick = (id:number) => {
     getNeighbors(id);
-    const box = boxes[id];
+    //const box = boxes[id];
     //const x = box ? box.x : null;
     //const y = box ? box.y : null;
 
