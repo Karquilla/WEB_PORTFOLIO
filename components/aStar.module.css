@@ -7,7 +7,7 @@
   }
 
 /* aStar.css */
-.control-buttons {
+.control_buttons {
   background: #D3D3D3;
   display: flex;
   color: #0a0a0a;
@@ -22,7 +22,7 @@
   gap: 10px;
 }
 
-.grid-box {
+.grid_box {
   color: #fff;
   font-weight: bold;
   font-size: x-small;
@@ -36,14 +36,14 @@
   transition: background-color 0.2s; /* Smooth color transition */
 }
 
-.grid-box.checked {
+.grid_box.checked {
   background-color: #87CEEB; /* Light blue for open set */
 }
 
-.grid-box.closed {
+.grid_box.closed {
   background-color: #FFA07A; /* Light coral for closed set */
 }
 
-.grid-box.path {
+.grid_box.path {
   background-color: #33aa33; /* Dark green for path */
 }

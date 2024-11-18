@@ -1,7 +1,7 @@
 // Grid.js
 'use client'
 import React, { useState} from 'react';
-import '../src/aStar.css';
+import styles from '../components/aStar.module.css';
 //import { start } from 'repl';
 
 const LIGHTGREY = '#D3D3D3';
@@ -308,11 +308,11 @@ const Astar = ({ columns = 40, cellSize = 20 }) => {
       >
 
       {/* Control Buttons */}
-      <div className="modeButtpn-container">
-        <button className="control-buttons" onClick={() => setMode('Mode 1')}>Place Start</button>
-        <button className="control-buttons" onClick={() => setMode('Mode 2')}>Place End</button>
-        <button className="control-buttons" onClick={() => setMode('Mode 3')}>Place Wall</button>
-        <button className="control-buttons" onClick={toggleRunning}>
+      <div className={styles.modeButtpn_container}>
+        <button className={styles.control_buttons} onClick={() => setMode('Mode 1')}>Place Start</button>
+        <button className={styles.control_buttons} onClick={() => setMode('Mode 2')}>Place End</button>
+        <button className={styles.control_buttons} onClick={() => setMode('Mode 3')}>Place Wall</button>
+        <button className={styles.control_buttons} onClick={toggleRunning}>
           {running ? 'Reset Loop' : 'Start search'}
         </button>
       </div>
@@ -325,7 +325,7 @@ const Astar = ({ columns = 40, cellSize = 20 }) => {
   
       {/* Grid Layout */}
       <div
-        className="grid"
+        className={styles.grid}
         style={{
           gridTemplateColumns: `repeat(${columns}, ${cellSize}px)`,
         }}
@@ -333,7 +333,7 @@ const Astar = ({ columns = 40, cellSize = 20 }) => {
         {boxes.map((box) => (
           <button
             key={box.id}
-            className={`grid-box`}
+            className={styles.grid_box}
             style={{
               backgroundColor: box.color,
               width: `${cellSize}px`,

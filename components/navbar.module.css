@@ -1,11 +1,11 @@
-.control-container {
+.control_container {
     display: flex;
     padding: 1px;
     gap: 10px;
-    flex-direction: row;
+    flex-direction: column;
 }
 
-.control-button {
+.control_button {
     display: flex; /* Flex container for link content */
     align-items: center; /* Center content vertically */
     justify-content: center; /* Center content horizontally */
@@ -13,7 +13,6 @@
     color: black; /* Text color */
     font-weight: bold;
     border-radius: 0px; /* Rounded corners */
-
     padding: 20px; /* Add clickable space */
     gap: 200px;
   }

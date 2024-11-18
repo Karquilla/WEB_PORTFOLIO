@@ -1,12 +1,12 @@
-import Navbar from "../../src/navbar";
-import Home from "../../src/home";
-import "../App.css"
+import Navbar from "../../components/navbar";
+import Home from "../../components/home";
+import styles from "../App.module.css"
 
 export default function page() {
   return (
-    <div className="layout"> 
-      <div className='-container'> <Navbar /> </div>
-      <div className='-container'><Home /></div>
+    <div className={styles.layout}> 
+      <div className={styles.container}> <Navbar /> </div>
+      <div className={styles.container}><Home /></div>
     </div>
   );
 }

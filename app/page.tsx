@@ -4,9 +4,9 @@
 import React from "react";
 //import Link from 'next/link'
 //import AStar from '../src/aStar';
-import Home from '../src/home';
-import Navbar from "../src/navbar";
-import './App.css';
+import Home from '../components/home';
+import Navbar from "../components/navbar";
+import './App.module.css';
 
 const page = () => {
   return (
