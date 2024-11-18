@@ -38,13 +38,12 @@ class GridBox {
 }
 
 
-const Astar = ({ columns = 40, cellSize = 20 }) => {
+const Astar = ({ columns = 40, rows = 20, cellSize = 20 }) => {
   const [startNode, setStartNode]     = useState<GridBox | null>(null);
   const [endNode, setEndNode]         = useState<GridBox | null>(null);
-  const [loopCount] = useState(0);
   // State for grid boxes, assigning each box an (x, y) coordinate
   const [boxes, setBoxes] = useState(
-    Array.from({ length: columns * columns }, (_, i) => {
+    Array.from({ length: columns * rows }, (_, i) => {
       return new GridBox(i, LIGHTGREY, `Box ${i + 1}`, i % (columns), Math.floor(i / columns));
     })
   );
@@ -190,7 +189,7 @@ const Astar = ({ columns = 40, cellSize = 20 }) => {
     const x = box ? box.x : null;
     const y = box ? box.y : null;
 
-    console.log(`Box ${id} clicked in ${mode}!, posx ${x} posy ${y}`);
+    //console.log(`Box ${id} clicked in ${mode}!, posx ${x} posy ${y}`);
     setBoxes((prevBoxes) => {
       // Clone the previous array of boxes
       const updatedBoxes = [...prevBoxes];
@@ -241,7 +240,7 @@ const Astar = ({ columns = 40, cellSize = 20 }) => {
   };
   
   function sleep(ms :number) {
-    console.log("timer started")
+    //console.log("timer started")
     return new Promise(resolve => setTimeout(resolve, ms));
   };
 
@@ -319,8 +318,7 @@ const Astar = ({ columns = 40, cellSize = 20 }) => {
   
       {/* Display current mode and loop count */}
       <div>
-        <p>Current Mode: {mode}</p>
-        <p>Loop Count: {loopCount}</p>
+        <h1>Selection: {mode}</h1>
       </div>
   
       {/* Grid Layout */}
@@ -328,6 +326,7 @@ const Astar = ({ columns = 40, cellSize = 20 }) => {
         className={styles.grid}
         style={{
           gridTemplateColumns: `repeat(${columns}, ${cellSize}px)`,
+          gridTemplateRows: `repeat(${rows}, ${cellSize}px)`, 
         }}
       >
         {boxes.map((box) => (
@@ -353,7 +352,7 @@ const Astar = ({ columns = 40, cellSize = 20 }) => {
           pointerEvents: 'none', // Prevent interfering with button clicks
         }}
       >
-        {box.h}
+        {box.f !== Infinity ? box.f : null}
       </span>
           </button>
         ))}

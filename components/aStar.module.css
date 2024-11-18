@@ -1,20 +1,28 @@
 /* Grid.css */
-.grid {
-    
-    display: grid;
-    gap: 1px;
-    padding: 20px;
-  }
+.grid { 
+  display: grid;
+  gap: 1px;
+  padding: 20px;
+  
+}
 
 /* aStar.css */
+.modeButtpn_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  gap: 5px;
+}
+
 .control_buttons {
   background: #D3D3D3;
   display: flex;
+  flex-direction: row;
   color: #0a0a0a;
   font-weight: bold;
   border: none;
   cursor: pointer;
-  display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 0px;
@@ -35,6 +43,8 @@
   border-radius: 0px;
   transition: background-color 0.2s; /* Smooth color transition */
 }
+
+
 
 .grid_box.checked {
   background-color: #87CEEB; /* Light blue for open set */

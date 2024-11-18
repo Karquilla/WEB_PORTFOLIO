@@ -6,17 +6,16 @@ import React from "react";
 //import AStar from '../src/aStar';
 import Home from '../components/home';
 import Navbar from "../components/navbar";
-import './App.module.css';
+import styles from './App.module.css';
 
-const page = () => {
+export default function page() {
   return (
-    <div><Navbar />
-    <Home />
+    <div className={styles.layout}> 
+      <div className={styles.container}> <Navbar /> </div>
+      <div className={styles.container}><Home /></div>
     </div>
   );
-};
-
-export default page;
+}
 
 
 //<div className="layout">
