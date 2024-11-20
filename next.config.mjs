@@ -1,8 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    //basePath: '/WEB_PORTFOLIO',
-    //assetPrefix: '/WEB_PORTFOLIO',
-    //output: 'export', // This replaces `next export`
+    async redirects() {
+        return [
+          {
+            source: '/',
+            destination: '/Home', // Redirect root URL to /home
+            permanent: true, // Set to true for 301 permanent redirect, false for 302 temporary
+          },
+        ];
+    }
 };
 
 export default nextConfig;
