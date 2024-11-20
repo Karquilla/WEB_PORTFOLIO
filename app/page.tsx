@@ -12,7 +12,7 @@ export default function page() {
   return (
     <div className={styles.layout}> 
       <div className={styles.container}> <Navbar /> </div>
-      <div className={styles.container}><Home /></div>
+      <div className={styles.container}> <Home /></div>
     </div>
   );
 }

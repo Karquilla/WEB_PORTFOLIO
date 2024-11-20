@@ -10,7 +10,7 @@ const Navbar = () => {
       <ul>
         <div className={styles.control_container}>
         <li ><Link href="/Home" className={styles.control_button}><span>Home</span></Link></li>
-        <li ><Link href="/AStar" className={styles.control_button}>A*</Link></li>
+        <li ><Link href="/AStar" className={styles.control_button}>A-Star</Link></li>
         </div>
       </ul>
       </nav>

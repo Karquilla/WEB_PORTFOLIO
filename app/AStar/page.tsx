@@ -10,13 +10,13 @@ export default function page() {
       
     <div className={styles.layout}>
       <div className={styles.container}> <Navbar /> </div>
-      <div style={{
+      <div style={{ //background
               display: 'flex',
               padding: '0%',
-              backgroundColor: '#555555',
+              backgroundColor: '#333333',
               width: '100vw',
               height: '100vw'}} >
-        <div className={styles.grid_container}> 
+        <div className={styles.content_container}> 
           <Astar /> 
           </div>
         </div>

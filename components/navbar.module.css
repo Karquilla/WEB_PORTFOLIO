@@ -1,7 +1,7 @@
 .control_container {
     display: flex;
     padding: 1px;
-    gap: 10px;
+    gap: 5px;
     flex-direction: column;
 }
 
@@ -9,10 +9,10 @@
     display: flex; /* Flex container for link content */
     align-items: center; /* Center content vertically */
     justify-content: center; /* Center content horizontally */
-    background-color: #D3D3D3; /* Background color */
-    color: black; /* Text color */
+    background-color: var(--secondary); /* Background color */
+    /* color: black; Text color */
     font-weight: bold;
     border-radius: 0px; /* Rounded corners */
     padding: 20px; /* Add clickable space */
-    gap: 200px;
+    height: 20px;
 }
