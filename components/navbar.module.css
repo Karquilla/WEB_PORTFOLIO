@@ -1,18 +1,27 @@
-.control_container {
+.sidebar {
     display: flex;
-    padding: 1px;
-    gap: 5px;
+    flex: 1;
+    width: 16vh;
+    height: 100vh;
+    justify-content: top;
     flex-direction: column;
-}
+    padding: 5px;
+    gap: 5px;
+    color: var(--foreground);
+    background: var(--background); 
+  }
 
 .control_button {
-    display: flex; /* Flex container for link content */
-    align-items: center; /* Center content vertically */
-    justify-content: center; /* Center content horizontally */
+    display: flex;                      /* Flex container for link content */
+    align-items: center;                /* Center content vertically */
+    justify-content: center;            /* Center content horizontally */
     background-color: var(--secondary); /* Background color */
-    /* color: black; Text color */
     font-weight: bold;
-    border-radius: 0px; /* Rounded corners */
-    padding: 20px; /* Add clickable space */
+    border-radius: 3px;                 /* Rounded corners */
+    padding: 20px;                      /* Add clickable space */
     height: 20px;
+}
+
+.control_button:hover {
+    transform: scale(1.1); /* Enlarges the button slightly */
 }
