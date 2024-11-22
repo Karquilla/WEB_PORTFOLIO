@@ -9,17 +9,15 @@ export default function page() {
     <div>
       
     <div className={styles.layout}>
-      <div className={styles.container}> <Navbar /> </div>
+      <div > <Navbar /> </div>
       <div style={{ //background
-              display: 'flex',
-              padding: '0%',
-              backgroundColor: '#333333',
-              width: '100vw',
-              height: '100vw'}} >
-        <div className={styles.content_container}> 
-          <Astar /> 
-          </div>
-        </div>
+            display: 'flex',
+            padding: '0%',
+            backgroundColor: '#333333',
+            width: '100vw',
+            height: '100vw'}} >
+          <div className={styles.content}> <Astar /> </div>
+      </div>
     </div>
     </div>
   );
