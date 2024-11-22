@@ -5,15 +5,8 @@ import styles from "../App.module.css"
 export default function page() {
   return (
     <div className={styles.layout}> 
-      <div className={styles.sidebar}> <Navbar /> </div>
-      <div style={{ //background
-          display: 'flex',
-          padding: '0%',
-          backgroundColor: '#222222',
-          width: '100vw',
-          height: '100vw'}} > 
-        <div className={styles.content}> <Home /></div>
-      </div>
+      <div> <Navbar /> </div>
+      <div className={styles.content}> <Home /> </div>
     </div>
   );
 }

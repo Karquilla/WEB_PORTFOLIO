@@ -9,8 +9,10 @@
 
 .content {
   width: 100vh;
+  height: 100vh;
   display: flex;
   flex: 1;
+  background: #222222;
   justify-content: top;
   flex-direction: column;
   align-content: center;
@@ -19,6 +21,7 @@
 .h1 {
   display: flex;
   color: #dfdfdf;
+  justify-content: center;
   text-align: center;
   margin-bottom: 20px;
 } 
