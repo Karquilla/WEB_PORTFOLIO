@@ -3,6 +3,8 @@
   display: grid;
   gap: 1px;
   padding: 20px;
+  justify-content: center;
+  align-items: center;
   
 }
 
@@ -55,4 +57,20 @@
 
 .grid_box.path {
   background-color: #33aa33; /* Dark green for path */
+}
+
+.h1 {
+  display: flex;
+  color: #dfdfdf;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 20px;
+} 
+
+.h2 {
+  display: flex;
+  color: #dfdfdf;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
 }

@@ -317,8 +317,8 @@ const Astar = ({ columns = 40, rows = 20, cellSize = 20 }) => {
       </div>
   
       {/* Display current mode and loop count */}
-      <div>
-        <h1>Selection: {mode}</h1>
+      <div className={styles.h1}>
+        <p>Selection: {mode}</p>
       </div>
   
       {/* Grid Layout */}

@@ -23,5 +23,5 @@
 }
 
 .control_button:hover {
-    transform: scale(1.1); /* Enlarges the button slightly */
+    transform: scale(1.05); /* Enlarges the button slightly */
 }
